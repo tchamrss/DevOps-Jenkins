@@ -1,34 +1,34 @@
- 
+@Library('jenkins-shared-library')
+def gv
 pipeline {
     agent any
     
     stages {
-        stage('test') {
+
+        stage('init') {
             steps{
-                echo 'testing the application'
-                echo "executing pipeline for branch: $BRANCH_NAME"
+                script{
+                 gv = load “script.groovy“
+                }
                 
             }
         }
-        stage('build') { // for display purposes
-            when {
-                expression { 
-                    BRANCH_NAME == 'master'
-                 }
-            }
+        
+        stage('build jar') { // for display purposes
+            
             steps{
-                echo 'Building the application'
+                script{
+       
+                }
             }
         }
         
-        stage('deploy') {
-            when {
-                expression { 
-                    BRANCH_NAME == 'master'
-                 }
-            }
+        stage('build image') {
+            
             steps{
-                echo 'deploying the application'
+                script{
+                 
+                }
             }
         }
     }
