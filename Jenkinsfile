@@ -15,11 +15,7 @@ pipeline {
         }
 
         stage('build') {
-            when {
-                expression {
-                    env.GIT_BRANCH == 'origin/master'
-                }
-            }
+            
             steps {
                 echo 'Building the application'
             }
