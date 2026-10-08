@@ -30,7 +30,16 @@ pipeline {
             
             steps{
                 script{
-                 buildImage()
+                 buildImage 'tchamrss/demo-app:jma-3.0'
+                }
+            }
+        }
+        stage('deploy') { // for display purposes
+            
+            steps{
+                script{
+                    gv.deployApp()
+       
                 }
             }
         }
