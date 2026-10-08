@@ -6,14 +6,14 @@ pipeline {
         stage('test') {
             steps{
                 echo 'testing the application'
-                echo "executing pipeline for branch: $BRANCH_NAME"
+                echo "executing pipeline for branch: ${env.GIT_BRANCH}"
                 
             }
         }
         stage('build') { // for display purposes
             when {
                 expression { 
-                    BRANCH_NAME == 'master'
+                    env.GIT_BRANCH == 'origin/master'
                  }
             }
             steps{
@@ -22,11 +22,7 @@ pipeline {
         }
         
         stage('deploy') {
-            when {
-                expression { 
-                    BRANCH_NAME == 'master'
-                 }
-            }
+            
             steps{
                 echo 'deploying the application'
             }
