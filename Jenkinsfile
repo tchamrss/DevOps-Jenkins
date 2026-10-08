@@ -1,4 +1,10 @@
-@Library('jenkins-shared-library')
+library identifier: 'jenkins-shared-library@master', retriever: modernSCM(
+    [
+        $class:'GitSCMSource',
+        remote:'https://github.com/tchamrss/DevOps-Jenkins.git',
+        credentialsId: 'git-credentials'
+    ]
+
 def gv
 pipeline {
     agent any
