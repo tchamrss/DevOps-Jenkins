@@ -7,6 +7,7 @@ pipeline {
             steps{
                 echo 'testing the application'
                 echo "executing pipeline for branch: $BRANCH_NAME"
+                echo 'the application was tested successfully'
                 
             }
         }
