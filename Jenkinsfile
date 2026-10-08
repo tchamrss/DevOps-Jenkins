@@ -30,9 +30,9 @@ pipeline {
             
             steps{
                 script{
-                 buildImage 'tchamrss/demo-app:jma-4.0'
+                 buildImage 'tchamrss/demo-app:jma-3.0'
                  dockerLogin()
-                 dockerPush() 'tchamrss/demo-app:jma-4.0'
+                 dockerPush() 'tchamrss/demo-app:jma-3.0'
                 }
             }
         }
