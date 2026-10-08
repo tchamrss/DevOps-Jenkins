@@ -1,36 +1,42 @@
- 
+
 pipeline {
     agent any
-    
+
+    triggers {
+        githubPush()
+    }
+
     stages {
+
         stage('test') {
-            steps{
+            steps {
                 echo 'testing the application'
-                echo "executing pipeline for branch: $BRANCH_NAME"
+                echo "executing pipeline for branch: ${env.GIT_BRANCH}"
                 echo 'the application was tested successfully'
-                
             }
         }
-        stage('build') { // for display purposes
+
+        stage('build') {
             when {
-                expression { 
-                    BRANCH_NAME == 'master'
-                 }
+                expression {
+                    env.GIT_BRANCH == 'origin/master'
+                }
             }
-            steps{
+            steps {
                 echo 'Building the application'
             }
         }
-        
+
         stage('deploy') {
             when {
-                expression { 
-                    BRANCH_NAME == 'master'
-                 }
+                expression {
+                    env.GIT_BRANCH == 'origin/master'
+                }
             }
-            steps{
+            steps {
                 echo 'deploying the application'
             }
         }
     }
 }
+
