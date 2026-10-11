@@ -44,19 +44,13 @@ pipeline {
         stage("commit version update") {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'global', passwordVariable: 'GITHUB_TOKEN', usernameVariable: 'GITHUB_USERNAME')]) {
-                        sh '''
-                            git config --global user.email "$GITHUB_USERNAME@example.com"
-                            git config --global user.name "$GITHUB_USERNAME"
-
-                            git status
-                            git branch
-                            git config --list
-
-                            git remote set-url origin https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com/tchamrss/DevOps-Jenkins.git
-                            git add .
-                            git commit -m "Incremented version to ${IMAGE_NAME}"
-                            git push origin HEAD:master
+                    withCredentials([usernamePassword(credentialsId: 'github_token', passwordVariable: 'GITHUB_TOKEN', usernameVariable: 'GITHUB_USERNAME')]) {
+                        sh ''' 
+                        git config user.name "$GITHUB_USERNAME" 
+                        git config user.email "your-email@example.com" 
+                        git add . 
+                        it commit -m "Incremented version to ${IMAGE_NAME}" 
+                        git push https://github.com/tchamrss/DevOps-Jenkins.git HEAD:master 
                         '''
                     }
                 }
