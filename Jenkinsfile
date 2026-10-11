@@ -1,36 +1,52 @@
 
 pipeline {
     agent any
-
-
-    
     stages {
-
-        stage('test') {
+        stage("init") {
             steps {
-                echo 'testing the application'
-                echo "executing pipeline for branch: ${env.GIT_BRANCH}"
-                echo 'the application was tested successfully'
-            }
-        }
-
-        stage('build') {
-            
-            steps {
-                echo 'Building the application'
-            }
-        }
-
-        stage('deploy') {
-            when {
-                expression {
-                    env.GIT_BRANCH == 'origin/master'
+                script {
+                    gv = load "script.groovy"
                 }
             }
+        }
+        stage("increment version") {
+                    steps {
+                        script {
+                            echo "incrementing the application version"
+                            sh 'mvn build-helper:parse-version versions:set \
+                                -DnewVersion=\\\${parsedVersion.majorVersion}.\\\${parsedVersion.minorVersion}.\\\${parsedVersion.nextIncrementalVersion} \
+                                versions:commit'
+                          def matcher = readFile('pom.xml') =~'<version>(.+)</version>'
+                          def version = matcher[0][1]
+                          env.IMAGE_NAME = "$version-$BUILD_NUMBER"
+                        }
+                    }
+        }
+
+        stage("build app") {
             steps {
-                echo 'deploying the application'
+                script {
+                    //echo "building the application"
+                    gv.buildJar()
+                }
             }
         }
-    }
+        stage("build image") {
+            steps {
+                script {
+                    //echo "building the docker image"
+                    gv.buildImage(env.IMAGE_NAME)
+                }
+            }
+        }
+        stage("deploy") {
+            steps {
+                script {
+                    //echo "deploying"
+                    gv.deployApp()
+                }
+            }
+        }
+    }   
 }
 
