@@ -48,9 +48,10 @@ pipeline {
                         sh ''' 
                         git config user.name "$GITHUB_USERNAME" 
                         git config user.email "your-email@example.com" 
+                        git remote set-url origin https://$GITHUB_USERNAME:$GITHUB_TOKEN@github.com/$GITHUB_USERNAME/DevOps-Jenkins.git
                         git add . 
                         git commit -m "Incremented version to ${IMAGE_NAME}" 
-                        git push https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com/tchamrss/DevOps-Jenkins.git HEAD:master 
+                        git push origin HEAD:master 
                         '''
                     }
                 }
