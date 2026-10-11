@@ -49,7 +49,7 @@ pipeline {
                         git config user.name "$GITHUB_USERNAME" 
                         git config user.email "your-email@example.com" 
                         git add . 
-                        it commit -m "Incremented version to ${IMAGE_NAME}" 
+                        git commit -m "Incremented version to ${IMAGE_NAME}" 
                         git push https://github.com/tchamrss/DevOps-Jenkins.git HEAD:master 
                         '''
                     }
