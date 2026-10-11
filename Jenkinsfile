@@ -40,11 +40,25 @@ pipeline {
                 }
             }
         }
-        stage("deploy") {
+        
+        stage("commit version update") {
             steps {
                 script {
-                    //echo "deploying"
-                    gv.deployApp()
+                    withCredentials([usernamePassword(credentialsId: 'git-credentials', passwordVariable: 'GITHUB_PASSWORD', usernameVariable: 'GITHUB_USERNAME')]) {
+                        sh '''
+                            git config --global user.email "$GITHUB_USERNAME@example.com"
+                            git config --global user.name "$GITHUB_USERNAME"
+
+                            git status
+                            git branch
+                            git config --list
+                            
+                            git remote set-url origin https://$GITHUB_USERNAME:$GITHUB_PASSWORD@github.com/tchamrss/DevOps-Jenkins.git
+                            git add pom.xml
+                            git commit -m "Incremented version to ${IMAGE_NAME}"
+                            git push origin HEAD:master
+                        '''
+                    }
                 }
             }
         }
