@@ -46,10 +46,11 @@ pipeline {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'github_token', passwordVariable: 'GITHUB_TOKEN', usernameVariable: 'GITHUB_USERNAME')]) {
                         sh ''' 
-                        git config user.name "$GITHUB_USERNAME" 
-                        git config user.email "your-email@example.com" 
+                        git config user.name "jenkins" 
+                        git config user.email "jenkins@example.com" 
                         git remote set-url origin https://$GITHUB_USERNAME:$GITHUB_TOKEN@github.com/$GITHUB_USERNAME/DevOps-Jenkins.git
-                        git add . 
+                        git add pom.xml 
+                        git add Jenkinsfile
                         git commit -m "Incremented version to ${IMAGE_NAME}" 
                         git push origin HEAD:master 
                         '''
